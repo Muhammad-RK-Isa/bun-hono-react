@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   useQuery,
   useMutation,
@@ -5,9 +6,10 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { authConfigManager, SessionProvider } from "@hono/auth-js/react"
+
 import { routeTree } from './routeTree.gen'
 
 import './index.css'
@@ -20,6 +22,11 @@ const router = createRouter({
 
 // Set up a query client instance
 const queryClient = new QueryClient()
+
+authConfigManager.setConfig({
+  baseUrl: 'http://localhost:8000',
+  credentials: 'include',
+});
 
 // Register things for typesafety
 declare module '@tanstack/react-router' {
@@ -35,8 +42,10 @@ const rootElement = document.getElementById('app')!
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider> 
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </SessionProvider>
   )
 }

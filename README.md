@@ -1,4 +1,4 @@
-# bun-hono-react-server
+# bun-hono-react
 
 To install dependencies:
 

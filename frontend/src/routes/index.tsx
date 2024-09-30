@@ -1,3 +1,4 @@
+import { signIn, useSession } from '@hono/auth-js/react'
 import { createFileRoute } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
 import * as React from 'react'
@@ -12,23 +13,35 @@ export const Route = createFileRoute('/')({
 
 function HomeComponent() {
   const [isOpen, setIsOpen] = React.useState(false)
+  const { data: session } = useSession()
 
   return (
-    <div className="mx-auto max-w-lg p-4 min-h-[calc(100vh-3.6rem)] flex flex-col gap-4">
-      <TotalSpentCard />
-      <ExpensesTable />
-      <ExpenseFormModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-      <Button
-        onClick={() => setIsOpen(true)}
-        className='bottom-4 w-full mt-auto'
-        size='lg'
-      >
-        <PlusIcon className='size-4 mr-2' />
-        Add expense
-      </Button>
+    <div className="mx-auto max-w-lg p-4 space-y-4">
+      {!session?.user ? (
+        <Button
+          onClick={() => signIn('google')}
+          className='w-full'
+        >
+          Sign in to continue
+        </Button>
+      ) : (
+        <>
+          <TotalSpentCard />
+          <ExpensesTable />
+          <ExpenseFormModal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
+          <Button
+            onClick={() => setIsOpen(true)}
+            className='w-full'
+            size='lg'
+          >
+            <PlusIcon className='size-4 mr-2' />
+            Add expense
+          </Button>
+        </>
+      )}
     </div>
   )
 }

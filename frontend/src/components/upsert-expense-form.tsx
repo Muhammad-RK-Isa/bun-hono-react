@@ -41,7 +41,7 @@ export const UpsertExpenseForm: React.FC<UpsertExpenseFormProps> = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -118,8 +118,9 @@ export const UpsertExpenseForm: React.FC<UpsertExpenseFormProps> = ({
         <Button
           type="submit"
           className='w-full'
+          size="lg"
         >
-          Submit
+          Done
         </Button>
       </form>
     </Form>
